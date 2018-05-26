@@ -63,7 +63,6 @@ sysvmsg
 sysvsem
 sysvshm
 tidy
-timezonedb
 tokenizer
 xml
 xmlreader
