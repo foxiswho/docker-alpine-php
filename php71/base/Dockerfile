@@ -144,6 +144,9 @@ RUN set -ex \
         # - create user dir
         && mkdir -p /data \
         && chown -R ${add_user}:${add_user} /data \
+        && mkdir -p /usr/local/etc/ \
+        && ln -s /etc/php7/php-fpm.conf /usr/local/etc/php-fpm.conf \
+        && ln -s /etc/php7/php-fpm.d /usr/local/etc/php-fpm.d \
 
         && echo -e "\033[42;37m Build Completed :).\033[0m\n"
 
@@ -213,8 +216,8 @@ RUN set -ex \
 
         && echo -e "\033[42;37m Build Completed :).\033[0m\n"
 
-# EXPOSE 9000
-EXPOSE 9501
+EXPOSE 9000
+#EXPOSE 9501
 
 VOLUME ["/var/www", "/data"]
 WORKDIR "/var/www"
