@@ -211,6 +211,14 @@ RUN set -ex \
         ) \
         && rm -r swoole \
         && echo "extension=swoole.so" > /etc/php7/conf.d/20_swoole.ini \
+        && curl -sS https://getcomposer.org/installer | php \
+        && mv composer.phar /usr/local/bin/ \
+        && chmod 755 /usr/local/bin/composer.phar \
+        && ln -s /usr/local/bin/composer.phar /usr/local/bin/composer \
+        && curl -sSLo phpunit.phar https://phar.phpunit.de/phpunit.phar \
+        && chmod 755 phpunit.phar \
+        && mv phpunit.phar /usr/local/bin/ \
+        && ln -s /usr/local/bin/phpunit.phar /usr/local/bin/phpunit \
         && apk del .phpize-deps \
         && rm -rf /var/cache/apk/* /tmp/* /usr/share/man /usr/share/php7 \
         #
