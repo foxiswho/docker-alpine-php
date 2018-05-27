@@ -4,5 +4,5 @@
 然后修改 `fpm`目录下`Dockerfile`中的 `FROM foxiswho/php-alpine:base-php71`修改为`FROM alphp/php71:base`
 再执行如下命令构建
 ```SHEL
-docker build . -f Dockerfile -t alphp/php71-fpm:base
+docker build . -f Dockerfile -t alphp/php71:fpm
 ```

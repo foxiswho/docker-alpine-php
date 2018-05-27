@@ -8,6 +8,7 @@
 # @build-example docker build . -f alphp-fpm.Dockerfile -t alphp/alphp:fpm
 #
 
+#FROM alphp/php71:base
 FROM foxiswho/php-alpine:base-php71
 LABEL maintainer="inhere <cloud798@126.com>" version="1.0"
 
@@ -23,7 +24,6 @@ RUN set -ex \
 			php7-fpm \
         && apk del --purge *-dev \
         && rm -rf /var/cache/apk/* /tmp/* /usr/share/man /usr/share/php7 \
-
         # - config PHP-FPM
         && cd /etc/php7 \
         && { \
@@ -33,7 +33,6 @@ RUN set -ex \
             echo "user = www"; \
             echo "group = www"; \
         } | tee php-fpm.d/custom.conf \
-
         # - config site
         && chown -R www:www /var/www \
         && { \
@@ -48,7 +47,7 @@ RUN set -ex \
         && . /root/.bashrc \
         && echo -e "\033[42;37m Build Completed :).\033[0m\n"
 
-EXPOSE 9501 80
+EXPOSE 9000
 VOLUME ["/var/www", "/data"]
 WORKDIR "/var/www"
 
