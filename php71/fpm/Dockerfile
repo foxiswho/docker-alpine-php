@@ -9,7 +9,7 @@
 #
 
 #FROM alphp/php71:base
-FROM foxiswho/php-alpine:base-php71
+FROM foxiswho/php-alpine:php71
 LABEL maintainer="inhere <cloud798@126.com>" version="1.0"
 
 ##
@@ -35,6 +35,7 @@ RUN set -ex \
         } | tee php-fpm.d/custom.conf \
         # - config site
         && chown -R www:www /var/www \
+        && sed -i 's/127.0.0.1:9000/0.0.0.0:9000/g' /etc/php7/php-fpm.d/www.conf \
         && { \
             echo "#!/bin/sh"; \
             # echo "php /var/www/uem.phar taskServer:start -d"; \
