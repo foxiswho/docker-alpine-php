@@ -55,7 +55,7 @@ RUN set -ex \
         openssl  \
         tzdata \
         pcre \
-
+        #
         # install php7 and some extensions
         php7 \
         # php7-common \
@@ -131,23 +131,23 @@ RUN set -ex \
             echo "memory_limit=1024M"; \
             echo "date.timezone=${TIMEZONE}"; \
         } | tee conf.d/99-overrides.ini \
-
+        #
         # - config timezone
         && ln -sf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
         && echo "${TIMEZONE}" > /etc/timezone \
-
+        #
         # ---------- some config work ----------
         # - ensure 'www' user exists
         && addgroup -S ${add_user} \
         && adduser -D -S -G ${add_user} ${add_user} \
-
+        #
         # - create user dir
         && mkdir -p /data \
         && chown -R ${add_user}:${add_user} /data \
         && mkdir -p /usr/local/etc/ \
         && ln -s /etc/php7/php-fpm.conf /usr/local/etc/php-fpm.conf \
         && ln -s /etc/php7/php-fpm.d /usr/local/etc/php-fpm.d \
-
+        #
         && echo -e "\033[42;37m Build Completed :).\033[0m\n"
 
 ##
@@ -174,12 +174,12 @@ RUN set -ex \
         openssl-dev \
         # for swoole ext
         libaio linux-headers libaio-dev \
-
+        #
         # php extension: mongodb
         # && pecl install mongodb.tgz \
         && pecl install mongodb \
         && echo "extension=mongodb.so" > /etc/php7/conf.d/20_mongodb.ini  \
-
+        #
         # php extension: phalcon framework
         # && tar -xf cphalcon.tar.gz \
         # && apk add --no-cache --virtual .phpize-deps $PHPIZE_DEPS \
@@ -190,14 +190,14 @@ RUN set -ex \
         # && cp ../tests/_ci/phalcon.ini $(php-config --configure-options | grep -o "with-config-file-scan-dir=\([^ ]*\)" | awk -F'=' '{print $2}') \
         # && cd ../../ \
         # && rm -r cphalcon-${PHALCON_VERSION} \
-
+        #
         # hiredis - redis C client, provide async operate support for Swoole
         # && wget -O hiredis.tar.gz -c https://github.com/redis/hiredis/archive/v${HIREDIS_VERSION}.tar.gz \
         && cd /tmp \
         && tar -zxvf hiredis.tar.gz \
         && cd hiredis-${HIREDIS_VERSION} \
         && make -j && make install \
-
+        #
         # php extension: swoole
         && cd /tmp \
         && mkdir -p swoole \
@@ -213,7 +213,7 @@ RUN set -ex \
         && echo "extension=swoole.so" > /etc/php7/conf.d/20_swoole.ini \
         && apk del .phpize-deps \
         && rm -rf /var/cache/apk/* /tmp/* /usr/share/man /usr/share/php7 \
-
+        #
         && echo -e "\033[42;37m Build Completed :).\033[0m\n"
 
 EXPOSE 9000
