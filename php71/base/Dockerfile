@@ -60,6 +60,7 @@ RUN set -ex \
         php7 \
         # php7-common \
         php7-fpm \
+        php7-amqp \
         php7-bz2 \
         php7-bcmath \
         php7-calendar \
