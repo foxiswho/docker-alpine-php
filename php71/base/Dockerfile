@@ -194,6 +194,8 @@ RUN set -ex \
         # && pecl install mongodb.tgz \
         && pecl install mongodb \
         && echo "extension=mongodb.so" > /etc/php7/conf.d/20_mongodb.ini  \
+        && pecl install seaslog \
+        && echo "extension=seaslog.so" > /etc/php7/conf.d/20_seaslog.ini  \
         #
         # php extension: phalcon framework
         # && tar -xf cphalcon.tar.gz \
