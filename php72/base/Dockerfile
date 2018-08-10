@@ -27,7 +27,6 @@ ENV APP_ENV=${app_env:-"pdt"} \
     PHPIZE_DEPS="autoconf dpkg-dev dpkg file g++ gcc libc-dev make php7-dev php7-pear pkgconf re2c pcre-dev zlib-dev"
 
 ENV HIREDIS_VERSION=0.13.3 \
-    SeasLog_VERSION=1.8.4 \
     PHALCON_VERSION=3.3.2 \
     SWOOLE_VERSION=2.1.3 \
     MONGO_VERSION=1.4.2
@@ -179,7 +178,6 @@ RUN set -ex \
         && cd /tmp \
         && curl -SL "https://github.com/redis/hiredis/archive/v${HIREDIS_VERSION}.tar.gz" -o hiredis.tar.gz \
         && curl -SL "https://github.com/swoole/swoole-src/archive/v${SWOOLE_VERSION}.tar.gz" -o swoole.tar.gz \
-        && curl -SL "http://pecl.php.net/get/SeasLog-${SeasLog_VERSION}.tgz" -o SeasLog.tar.gz \
         # && curl -SL "https://github.com/phalcon/cphalcon/archive/v${PHALCON_VERSION}.tar.gz" -o cphalcon.tar.gz \
         # && curl -SL "https://github.com/mongodb/mongo-php-driver/archive/v${MONGO_VERSION}.tgz" -o mongodb.tgz \
         # && curl -SL "http://pecl.php.net/get/mongodb-${MONGO_VERSION}.tgz" -o mongodb.tgz \
@@ -196,6 +194,8 @@ RUN set -ex \
         # && pecl install mongodb.tgz \
         && pecl install mongodb \
         && echo "extension=mongodb.so" > /etc/php7/conf.d/20_mongodb.ini  \
+        && pecl install seaslog \
+        && echo "extension=seaslog.so" > /etc/php7/conf.d/20_seaslog.ini  \
         #
         # php extension: phalcon framework
         # && tar -xf cphalcon.tar.gz \
@@ -214,20 +214,6 @@ RUN set -ex \
         && tar -zxvf hiredis.tar.gz \
         && cd hiredis-${HIREDIS_VERSION} \
         && make -j && make install \
-        #
-        # php extension: SeasLog
-        && cd /tmp \
-        && mkdir -p SeasLog \
-        && tar -xf SeasLog.tar.gz -C SeasLog --strip-components=1 \
-        && rm SeasLog.tar.gz \
-        && ( \
-            cd SeasLog \
-            && phpize \
-            && ./configure --with-php-config=/usr/bin/php-config \
-            && make -j && make install \
-        ) \
-        && rm -r SeasLog \
-        && echo "extension=seaslog.so" > /etc/php7/conf.d/20_seaslog.ini \
         #
         # php extension: swoole
         && cd /tmp \
