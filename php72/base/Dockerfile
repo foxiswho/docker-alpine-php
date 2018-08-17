@@ -88,7 +88,7 @@ RUN set -ex \
         php7-memcached \
         php7-mcrypt \
         php7-mbstring \
-        # php7-mongodb \
+        php7-mongodb \
         php7-mysqlnd \
         php7-mysqli \
         php7-odbc \
@@ -176,8 +176,8 @@ RUN set -ex \
 # COPY deps/mongodb-${MONGO_VERSION}.tgz mongodb.tgz
 RUN set -ex \
         && cd /tmp \
-        && curl -SL "https://github.com/redis/hiredis/archive/v${HIREDIS_VERSION}.tar.gz" -o hiredis.tar.gz \
-        && curl -SL "https://github.com/swoole/swoole-src/archive/v${SWOOLE_VERSION}.tar.gz" -o swoole.tar.gz \
+        #&& curl -SL "https://github.com/redis/hiredis/archive/v${HIREDIS_VERSION}.tar.gz" -o hiredis.tar.gz \
+        #&& curl -SL "https://github.com/swoole/swoole-src/archive/v${SWOOLE_VERSION}.tar.gz" -o swoole.tar.gz \
         # && curl -SL "https://github.com/phalcon/cphalcon/archive/v${PHALCON_VERSION}.tar.gz" -o cphalcon.tar.gz \
         # && curl -SL "https://github.com/mongodb/mongo-php-driver/archive/v${MONGO_VERSION}.tgz" -o mongodb.tgz \
         # && curl -SL "http://pecl.php.net/get/mongodb-${MONGO_VERSION}.tgz" -o mongodb.tgz \
@@ -192,10 +192,12 @@ RUN set -ex \
         #
         # php extension: mongodb
         # && pecl install mongodb.tgz \
-        && pecl install mongodb \
-        && echo "extension=mongodb.so" > /etc/php7/conf.d/20_mongodb.ini  \
+        #&& pecl install mongodb \
+        #&& echo "extension=mongodb.so" > /etc/php7/conf.d/20_mongodb.ini  \
         && pecl install seaslog \
         && echo "extension=seaslog.so" > /etc/php7/conf.d/20_seaslog.ini  \
+        && pecl install swoole \
+        && echo "extension=swoole.so" > /etc/php7/conf.d/20_swoole.ini  \
         #
         # php extension: phalcon framework
         # && tar -xf cphalcon.tar.gz \
@@ -210,23 +212,23 @@ RUN set -ex \
         #
         # hiredis - redis C client, provide async operate support for Swoole
         # && wget -O hiredis.tar.gz -c https://github.com/redis/hiredis/archive/v${HIREDIS_VERSION}.tar.gz \
-        && cd /tmp \
-        && tar -zxvf hiredis.tar.gz \
-        && cd hiredis-${HIREDIS_VERSION} \
-        && make -j && make install \
+        #&& cd /tmp \
+        #&& tar -zxvf hiredis.tar.gz \
+        #&& cd hiredis-${HIREDIS_VERSION} \
+        #&& make -j && make install \
         #
         # php extension: swoole
-        && cd /tmp \
-        && mkdir -p swoole \
-        && tar -xf swoole.tar.gz -C swoole --strip-components=1 \
-        && rm swoole.tar.gz \
-        && ( \
-            cd swoole \
-            && phpize \
-            && ./configure --enable-async-redis --enable-mysqlnd --enable-coroutine \
-            && make -j$(nproc) && make install \
-        ) \
-        && rm -r swoole \
+        #&& cd /tmp \
+        #&& mkdir -p swoole \
+        #&& tar -xf swoole.tar.gz -C swoole --strip-components=1 \
+        #&& rm swoole.tar.gz \
+        #&& ( \
+        #    cd swoole \
+        #    && phpize \
+        #    && ./configure --enable-async-redis --enable-mysqlnd --enable-coroutine \
+        #    && make -j$(nproc) && make install \
+        #) \
+        #&& rm -r swoole \
         && echo "extension=swoole.so" > /etc/php7/conf.d/20_swoole.ini \
         && curl -sS https://getcomposer.org/installer | php \
         && mv composer.phar /usr/local/bin/ \
