@@ -1,3 +1,19 @@
+# docker
+
+demo php version
+```bash
+
+docker run -it --rm --name php80 -v /www:/wwwroot   foxiswho/php-alpine:php80 /usr/bin/php8 -v
+```
+
+# dir
+
+```bash
+/usr/bin/php8
+
+/usr/bin/supervisor
+```
+
 # docker-alpine-php
 
 本 docker整合了如下链接而成：(站在巨人肩膀上)
