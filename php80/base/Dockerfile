@@ -269,7 +269,7 @@ RUN set -ex \
         #) \
         #&& rm -r swoole \
         && ls -alh /etc/php8/conf.d/ \
-        && echo "extension=swoole.so" > /etc/php8/conf.d/20_swoole.ini \
+#        && echo "extension=swoole.so" > /etc/php8/conf.d/20_swoole.ini \
         && curl -sS https://getcomposer.org/installer | php \
         && mv composer.phar /usr/local/bin/ \
         && chmod 755 /usr/local/bin/composer.phar \
