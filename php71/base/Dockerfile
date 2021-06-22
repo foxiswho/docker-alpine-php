@@ -55,6 +55,7 @@ RUN set -ex \
         openssl  \
         tzdata \
         pcre \
+        supervisor \
         #
         # install php7 and some extensions
         php7 \
