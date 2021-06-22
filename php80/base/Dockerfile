@@ -37,6 +37,9 @@ ENV HIREDIS_VERSION=1.0.0 \
 RUN set -ex \
         # change apk source repo
         #&& sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/' /etc/apk/repositories \
+#        echo "https://mirror.tuna.tsinghua.edu.cn/alpine/edge/main" > /etc/apk/repositories \
+#        && echo "https://mirror.tuna.tsinghua.edu.cn/alpine/edge/community" >> /etc/apk/repositories \
+        && echo "https://mirror.tuna.tsinghua.edu.cn/alpine/edge/testing" >> /etc/apk/repositories \
         && apk update \
         && apk add --no-cache \
         # Install base packages
@@ -162,6 +165,8 @@ RUN set -ex \
 # ---------- some config,clear work ----------
 ##
 RUN set -ex \
+        && ls -alh /etc \
+        #&& ls -alh /etc/php \
         && cd /etc/php8 \
         # - config PHP
         && { \
@@ -275,6 +280,7 @@ RUN set -ex \
         && ln -s /usr/local/bin/phpunit.phar /usr/local/bin/phpunit \
         && apk del .phpize-deps \
         && rm -rf /var/cache/apk/* /tmp/* /usr/share/man /usr/share/php8 \
+        && mkdir -p /var/log/www/default \
         #
         && echo -e "\033[42;37m Build Completed :).\033[0m\n"
 
