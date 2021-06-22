@@ -108,7 +108,7 @@ RUN set -ex \
         php8-pspell \
         php8-posix \
         #php8-recode \
-        #php8-redis \
+        php8-redis \
         php8-simplexml \
         #php8-sqlite \
         php8-session \
