@@ -19,11 +19,11 @@ LABEL maintainer="foxwho <foxiswho@gmail.com>" version="1.0"
 RUN set -ex \
         # change apk source repo
         #&& sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/' /etc/apk/repositories \
-        && apk update \
-        && apk add --no-cache \
-			php8-fpm \
-        && apk del --purge *-dev \
-        && rm -rf /var/cache/apk/* /tmp/* /usr/share/man /usr/share/php8 \
+#        && apk update \
+#        && apk add --no-cache \
+#			php8-fpm \
+#        && apk del --purge *-dev \
+#        && rm -rf /var/cache/apk/* /tmp/* /usr/share/man /usr/share/php8 \
         # - config PHP-FPM
         && cd /etc/php8 \
         && { \
