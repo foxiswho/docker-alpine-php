@@ -1,4 +1,6 @@
 *.log
 .env
 .idea/
+alpine
+alpine/
 alpine/*

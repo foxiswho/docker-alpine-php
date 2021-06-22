@@ -1,4 +1,4 @@
-# @description php 7.3 image base on the alpine 3.10 镜像更小
+# @description php 8.0 image base on the alpine 3.10 镜像更小
 #                       some information
 # ------------------------------------------------------------------------------------
 # @link https://hub.docker.com/_/alpine/      alpine image
@@ -24,7 +24,7 @@ ARG add_user=www
 ENV APP_ENV=${app_env:-"pdt"} \
     TIMEZONE=${timezone:-"Asia/Shanghai"} \
     #  install and remove building packages
-    PHPIZE_DEPS="autoconf dpkg-dev dpkg file g++ gcc libc-dev make php7-dev php7-pear pkgconf re2c pcre-dev zlib-dev"
+    PHPIZE_DEPS="autoconf dpkg-dev dpkg file g++ gcc libc-dev make  pkgconf re2c pcre-dev zlib-dev "
 
 ENV HIREDIS_VERSION=1.0.0 \
     PHALCON_VERSION=4.1.2 \
@@ -50,7 +50,7 @@ RUN set -ex \
         curl \
         tar \
         xz \
-        libressl \
+        #libressl \
         # openssh  \
         openssl  \
         tzdata \
@@ -60,6 +60,8 @@ RUN set -ex \
         # install php8 and some extensions
         php8 \
         php8-common \
+        php8-dev \
+        php8-pear \
         php8-fpm \
         #php8-amqp \
         php8-bz2 \
@@ -86,10 +88,10 @@ RUN set -ex \
         #php8-json \
         php8-ldap \
         #php8-litespeed \
-        #php8-memcached \
-        #php8-mcrypt \
+#        php8-memcached \
+#        php8-mcrypt \
         php8-mbstring \
-#        php8-mongodb \
+        php8-mongodb \
         php8-mysqlnd \
         php8-mysqli \
         php8-odbc \
@@ -133,8 +135,9 @@ RUN set -ex \
         php8-xsl \
         php8-zip \
         #php8-zlib \
+#        php8-xlswriter \
         && apk del --purge *-dev
-##        && rm -rf /var/cache/apk/* /tmp/* /usr/share/man /usr/share/php7
+##        && rm -rf /var/cache/apk/* /tmp/* /usr/share/man /usr/share/php8
 
 ##
 # ---------- some config,clear work ----------
@@ -183,6 +186,15 @@ RUN set -ex \
         # && curl -SL "https://github.com/phalcon/cphalcon/archive/v${PHALCON_VERSION}.tar.gz" -o cphalcon.tar.gz \
         # && curl -SL "https://github.com/mongodb/mongo-php-driver/archive/v${MONGO_VERSION}.tgz" -o mongodb.tgz \
         # && curl -SL "http://pecl.php.net/get/mongodb-${MONGO_VERSION}.tgz" -o mongodb.tgz \
+        && ln -s /usr/bin/php8 /usr/bin/php \
+        && ln -s /usr/bin/pecl8 /usr/bin/pecl \
+        && ls -alh /usr/local/bin \
+        && ls -alh /usr/local/bin \
+        && ls -alh /usr/bin \
+        #&& wget http://pear.php.net/go-pear.phar -O go-pear.php \
+        #&& /usr/bin/php8 go-pear.php \
+        #&& ls -alh /usr/local/bin \
+        #        && ls -alh /usr/bin \
         && ls -alh \
         && apk update \
         && apk add --no-cache --virtual .phpize-deps \
@@ -194,11 +206,11 @@ RUN set -ex \
         #
         # php extension: mongodb
         # && pecl install mongodb.tgz \
-        && pecl install mongodb \
+        && pecl8 install mongodb \
         && echo "extension=mongodb.so" > /etc/php8/conf.d/20_mongodb.ini  \
-        && pecl install seaslog \
+        && pecl8 install seaslog \
         && echo "extension=seaslog.so" > /etc/php8/conf.d/20_seaslog.ini  \
-        && pecl install swoole \
+        && pecl8 install swoole \
         && echo "extension=swoole.so" > /etc/php8/conf.d/20_swoole.ini  \
         #
         # php extension: phalcon framework

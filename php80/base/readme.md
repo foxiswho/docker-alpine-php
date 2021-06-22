@@ -5,6 +5,6 @@ https://github.com/foxiswho/docker-compose-nginx-php-mysql
 
 # 本地构建
 ```SHEL
-docker build . -f Dockerfile -t alphp/php71:base
+docker build . -f Dockerfile -t alphp/php80:base
 ```
 
