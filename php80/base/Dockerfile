@@ -8,7 +8,7 @@
 # @build-example docker build . -f alphp-base.Dockerfile -t alphp/alphp:base
 #
 
-FROM alpine:3.14
+FROM alpine:edge
 LABEL maintainer="foxwho <foxiswho@gmail.com>" version="1.0"
 
 ##
@@ -110,7 +110,6 @@ RUN set -ex \
         php8-pspell \
         php8-posix \
         #php8-recode \
-        php8-redis \
         php8-simplexml \
         #php8-sqlite \
         php8-session \
@@ -136,6 +135,26 @@ RUN set -ex \
         php8-zip \
         #php8-zlib \
 #        php8-xlswriter \
+        php8-pecl-redis  \
+        php8-pecl-memcached  \
+        php8-pecl-mongodb  \
+        php8-pecl-swoole  \
+        php8-pecl-imagick  \
+        php8-pecl-event  \
+        php8-pecl-protobuf  \
+        php8-pecl-xhprof  \
+        php8-pecl-ssh2  \
+        php8-pecl-csv  \
+        php8-pecl-ssh2  \
+        php8-pecl-decimal  \
+        php8-pecl-timezonedb  \
+        php8-pecl-xmlrpc  \
+        php8-pecl-seaslog  \
+        php8-pecl-xlswriter  \
+        php8-pecl-yaml  \
+        php8-pecl-uuid  \
+        php8-pecl-mcrypt  \
+        php8-pecl-grpc  \
         && apk del --purge *-dev
 ##        && rm -rf /var/cache/apk/* /tmp/* /usr/share/man /usr/share/php8
 
@@ -167,6 +186,7 @@ RUN set -ex \
         && mkdir -p /usr/local/etc/ \
         && ln -s /etc/php8/php-fpm.conf /usr/local/etc/php-fpm.conf \
         && ln -s /etc/php8/php-fpm.d /usr/local/etc/php-fpm.d \
+        && ls -alh /etc/php8/conf.d/ \
         #
         && echo -e "\033[42;37m Build Completed :).\033[0m\n"
 
@@ -206,12 +226,12 @@ RUN set -ex \
         #
         # php extension: mongodb
         # && pecl install mongodb.tgz \
-        && pecl8 install mongodb \
-        && echo "extension=mongodb.so" > /etc/php8/conf.d/20_mongodb.ini  \
-        && pecl8 install seaslog \
-        && echo "extension=seaslog.so" > /etc/php8/conf.d/20_seaslog.ini  \
-        && pecl8 install swoole \
-        && echo "extension=swoole.so" > /etc/php8/conf.d/20_swoole.ini  \
+        #&& pecl8 install mongodb \
+        #&& echo "extension=mongodb.so" > /etc/php8/conf.d/20_mongodb.ini  \
+        #&& pecl8 install seaslog \
+        #&& echo "extension=seaslog.so" > /etc/php8/conf.d/20_seaslog.ini  \
+        ##&& pecl8 install swoole \
+        #&& echo "extension=swoole.so" > /etc/php8/conf.d/20_swoole.ini  \
         #
         # php extension: phalcon framework
         # && tar -xf cphalcon.tar.gz \
@@ -243,6 +263,7 @@ RUN set -ex \
         #    && make -j$(nproc) && make install \
         #) \
         #&& rm -r swoole \
+        && ls -alh /etc/php8/conf.d/ \
         && echo "extension=swoole.so" > /etc/php8/conf.d/20_swoole.ini \
         && curl -sS https://getcomposer.org/installer | php \
         && mv composer.phar /usr/local/bin/ \
