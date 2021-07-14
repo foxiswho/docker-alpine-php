@@ -1,7 +1,16 @@
 FROM php:7.0-fpm-alpine
 
 # =================================================================================================
+# --build-arg timezone=Asia/Shanghai
+ARG timezone
+# pdt pre test dev
+ARG app_env=pdt
+ARG add_user=www
 
+ENV APP_ENV=${app_env:-"pdt"} \
+    TIMEZONE=${timezone:-"Asia/Shanghai"} \
+    #  install and remove building packages
+    PHPIZE_DEPS="autoconf dpkg-dev dpkg file g++ gcc libc-dev make php7-dev php7-pear pkgconf re2c pcre-dev zlib-dev"
 # Install packages
 RUN set -ex \
             # change apk source repo
@@ -16,16 +25,42 @@ RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-di
 
 RUN pecl channel-update pecl.php.net
 RUN pecl install redis \
-    && pecl install xdebug \
+#    && pecl install xdebug \
     && pecl install memcached \
     && pecl install geoip-1.1.1 \
-    && docker-php-ext-enable redis memcached xdebug geoip
+    && docker-php-ext-enable redis memcached geoip
 
 RUN curl -sS https://getcomposer.org/installer | php && mv ./composer.phar /usr/local/bin/composer
 
 RUN set -ex \
         # change apk source repo
         # - config PHP-FPM
+        && cd /etc/php7 \
+                # - config PHP
+                && { \
+                    echo "upload_max_filesize=100M"; \
+                    echo "post_max_size=108M"; \
+                    echo "memory_limit=1024M"; \
+                    echo "date.timezone=${TIMEZONE}"; \
+                } | tee conf.d/99-overrides.ini \
+                #
+                # - config timezone
+                && ln -sf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
+                && echo "${TIMEZONE}" > /etc/timezone \
+                #
+                # ---------- some config work ----------
+                # - ensure 'www' user exists
+                && addgroup -S ${add_user} \
+                && adduser -D -S -G ${add_user} ${add_user} \
+                #
+                # - create user dir
+                && mkdir -p /data \
+                && mkdir -p /wwwroot \
+                && chown -R ${add_user}:${add_user} /data \
+                && chown -R ${add_user}:${add_user} /wwwroot \
+                && mkdir -p /usr/local/etc/ \
+                && ln -s /etc/php7/php-fpm.conf /usr/local/etc/php-fpm.conf \
+                && ln -s /etc/php7/php-fpm.d /usr/local/etc/php-fpm.d \
         && cd /etc/php7 \
         && { \
             echo "[global]"; \
@@ -47,8 +82,6 @@ RUN set -ex \
         && echo "alias ll='ls -lhG --color=auto'" >> /root/.bashrc \
         && chmod 755 /root/.bashrc \
         && . /root/.bashrc \
-        && mkdir -p /data \
-        && mkdir -p /wwwroot \
         && echo -e "\033[42;37m Build Completed :).\033[0m\n"
 
 EXPOSE 9000
