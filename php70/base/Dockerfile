@@ -61,7 +61,7 @@ RUN set -ex \
         php7 \
         php7-common \
         php7-fpm \
-        php7-amqp \
+#        php7-amqp \
         php7-bz2 \
         php7-bcmath \
         php7-calendar \
@@ -75,7 +75,7 @@ RUN set -ex \
         #php7-enchant \
         php7-exif \
         php7-ftp \
-        php7-fileinfo \
+#        php7-fileinfo \
         # php7-filter \
         php7-gd \
         php7-gettext \
@@ -86,7 +86,7 @@ RUN set -ex \
         php7-json \
         php7-ldap \
         #php7-litespeed \
-        php7-memcached \
+#        php7-memcached \
         php7-mcrypt \
         php7-mbstring \
         # php7-mongodb \
@@ -107,9 +107,9 @@ RUN set -ex \
         php7-phpdbg \
         php7-pspell \
         php7-posix \
-        php7-recode \
-        php7-redis \
-        php7-simplexml \
+#        php7-recode \
+#        php7-redis \
+#        php7-simplexml \
         # php7-sqlite \
         php7-session \
         php7-shmop \
@@ -117,18 +117,18 @@ RUN set -ex \
         php7-sockets \
         php7-soap \
         php7-sqlite3 \
-        php7-ssh2 \
+#        php7-ssh2 \
         php7-sysvshm \
         php7-sysvmsg \
         php7-sysvsem \
 #        php7-timezonedb \
         php7-tidy \
-        php7-tokenizer \
+#        php7-tokenizer \
         php7-wddx \
         php7-xml \
         php7-xmlreader \
         php7-xmlrpc \
-        php7-xmlwriter \
+#        php7-xmlwriter \
         php7-xsl \
         php7-zip \
         php7-zlib \
