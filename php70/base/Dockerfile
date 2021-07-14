@@ -5,7 +5,7 @@ FROM php:7.0-fpm-alpine
 ARG timezone
 # pdt pre test dev
 ARG app_env=pdt
-ARG add_user=www
+ARG add_user=www-data
 
 ENV APP_ENV=${app_env:-"pdt"} \
     TIMEZONE=${timezone:-"Asia/Shanghai"} \
@@ -47,8 +47,8 @@ RUN set -ex \
                         #
                         # ---------- some config work ----------
                         # - ensure 'www' user exists
-                        && addgroup -S ${add_user} \
-                        && adduser -D -S -G ${add_user} ${add_user} \
+                        #&& addgroup -S ${add_user} \
+                        #&& adduser -D -S -G ${add_user} ${add_user} \
                         #
                         # - create user dir
                         && mkdir -p /data \
@@ -60,12 +60,13 @@ RUN set -ex \
                     echo "[global]"; \
                     echo "pid = /var/run/php-fpm.pid"; \
                     echo "[www]"; \
-                    echo "user = www"; \
-                    echo "group = www"; \
+                    echo "user = www-data"; \
+                    echo "group = www-data"; \
                 } | tee php-fpm.d/custom.conf \
                 # - config site
-                && chown -R www:www /var/www \
+                && chown -R ${add_user}:${add_user} /var/www \
                 && sed -i 's/127.0.0.1:9000/0.0.0.0:9000/g' /usr/local/etc/php-fpm.d/www.conf \
+                && sed -i 's/listen = 9000/listen = 0.0.0.0:9000/g' /usr/local/etc/php-fpm.d/zz-docker.conf \
                 && { \
                     echo "#!/bin/sh"; \
                     # echo "php /var/www/uem.phar taskServer:start -d"; \
