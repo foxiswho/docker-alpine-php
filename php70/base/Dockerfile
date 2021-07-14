@@ -75,7 +75,10 @@ RUN set -ex \
                 && echo "alias ll='ls -lhG --color=auto'" >> /root/.bashrc \
                 && chmod 755 /root/.bashrc \
                 && . /root/.bashrc \
-
+        && curl -sS https://getcomposer.org/installer | php \
+        && mv composer.phar /usr/local/bin/ \
+        && chmod 755 /usr/local/bin/composer.phar \
+        && ln -s /usr/local/bin/composer.phar /usr/local/bin/composer \
             # change apk source repo
             && sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/' /etc/apk/repositories \
             && apk update
@@ -93,12 +96,12 @@ RUN pecl install redis \
     && pecl install geoip-1.1.1 \
     && docker-php-ext-enable redis memcached geoip
 
-RUN curl -sS https://getcomposer.org/installer | php && mv ./composer.phar /usr/local/bin/composer
+#RUN curl -sS https://getcomposer.org/installer | php && mv ./composer.phar /usr/local/bin/composer
 
 RUN set -ex \
         # change apk source repo
         # - config PHP-FPM
-
+        && rm -rf /var/cache/apk/* /tmp/* /usr/share/man /usr/share/php7 \
         && echo -e "\033[42;37m Build Completed :).\033[0m\n"
 
 EXPOSE 9000
