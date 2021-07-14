@@ -30,6 +30,7 @@ RUN set -ex \
         && ls -lh /etc/php7 \
         && ln -s /usr/local/bin/php /usr/local/bin/php7 \
         && ln -s /usr/local/sbin/php-fpm /usr/local/bin/php7-fpm \
+        && ln -s /usr/local/sbin/php-fpm /usr/local/bin/php-fpm7 \
         #
         && cd /usr/local/etc/php \
                         # - config PHP
